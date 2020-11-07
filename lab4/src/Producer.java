@@ -7,9 +7,9 @@ public class Producer implements  Runnable{
     @Override
     public void run() {
         while(true){
-            int howMuchProduce  = (int) (Math.random() * 10) + 1;
+            int number  = (int) (Math.random() * 10) + 1;
             try {
-                monitor.produceMany(howMuchProduce);
+                monitor.produce(number);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

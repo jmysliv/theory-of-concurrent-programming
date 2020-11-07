@@ -7,9 +7,8 @@ public class Consumer implements  Runnable{
     @Override
     public void run() {
         while(true){
-            int howMuchConsume  = (int) (Math.random() * 10) + 1;
             try {
-                monitor.consumeMany(howMuchConsume);
+                monitor.consume();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
