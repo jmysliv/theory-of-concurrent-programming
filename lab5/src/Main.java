@@ -2,9 +2,11 @@ public class Main {
     public static void main(String[] args) {
         int consumersNumber = 2;
         int producersNumber = 20;
+        //choose one
+//        Monitor monitor = new MonitorWithBoolean(10);
+        Monitor monitor = new MonitorWithHasWaiters(10);
         Thread[] consumersThreads = new Thread[consumersNumber];
         Thread[] producersThreads = new Thread[producersNumber];
-        Monitor monitor = new Monitor(10);
         Consumer[] consumers = new Consumer[consumersNumber];
         Producer[] producers = new Producer[producersNumber];
 

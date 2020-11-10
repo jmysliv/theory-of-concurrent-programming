@@ -3,22 +3,19 @@ import java.util.Queue;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class Monitor {
+public abstract class Monitor {
 
-    private final Queue<Integer> resources;
-    private final  int maxSize;
-
-    private final ReentrantLock lock;
-    private final Condition firstConsumer;
-    private final Condition restConsumers;
-    private final Condition firstProducer;
-    private final Condition restProducers;
-    private int firstConsumerSize = 0;
-    private int firstProducerSize = 0;
-    private int restConsumersSize = 0;
-    private int restProducersSize = 0;
-    private boolean isFirstProducer = false;
-    private boolean isFirstConsumer = false;
+    protected final Queue<Integer> resources;
+    protected final  int maxSize;
+    protected final ReentrantLock lock;
+    protected final Condition firstConsumer;
+    protected final Condition restConsumers;
+    protected final Condition firstProducer;
+    protected final Condition restProducers;
+    protected int firstConsumerSize = 0;
+    protected int firstProducerSize = 0;
+    protected int restConsumersSize = 0;
+    protected int restProducersSize = 0;
 
 
     Monitor(int size) {
@@ -31,7 +28,7 @@ public class Monitor {
         this.resources = new LinkedList<>();
     }
 
-    private void printStats(){
+    protected void printStats(){
         System.out.println("Rozmiar FP: " + firstProducerSize);
         System.out.println("Rozmiar RP: " + restProducersSize);
         System.out.println("Rozmiar FC: " + firstConsumerSize);
@@ -39,64 +36,7 @@ public class Monitor {
     }
 
 
-    public void produce(int number) throws InterruptedException {
-        lock.lock();
-        printStats();
+    public abstract void produce(int number) throws InterruptedException;
 
-        while(lock.hasWaiters(firstProducer)) {
-            System.out.println("Producent czeka na reszcie");
-            restProducersSize++;
-            restProducers.await();
-            restProducersSize--;
-        }
-
-        while(maxSize - this.resources.size() < number){
-            firstProducerSize ++;
-            System.out.println("Producent pierwszy w kolejce");
-            isFirstProducer = true;
-            firstProducer.await();
-            isFirstProducer = false;
-            firstProducerSize --;
-        }
-
-        for(int i=0; i<number; i++){
-            resources.add(number);
-        }
-
-        System.out.println("Producent wyprodukował: " + number);
-        System.out.println("Rozmiar kolejki: " + resources.size());
-        restProducers.signal();
-        firstConsumer.signal();
-        lock.unlock();
-    }
-
-    public  void consume(int number) throws InterruptedException {
-        lock.lock();
-        printStats();
-
-        while(lock.hasWaiters(firstConsumer)){
-            restConsumersSize++;
-            System.out.println("Konsument czeka na reszcie");
-            restConsumers.await();
-            restConsumersSize --;
-        }
-
-        while(this.resources.size() < number) {
-            firstConsumerSize ++;
-            System.out.println("Konsument pierwszy w kolejce");
-            isFirstConsumer = true;
-            firstConsumer.await();
-            isFirstConsumer = false;
-            firstConsumerSize --;
-        }
-        for (int i = 0; i < number; i++) {
-            resources.poll();
-        }
-
-        System.out.println("Konsument pobrał: " + number);
-        System.out.println("Rozmiar kolejki: " + resources.size());
-        restConsumers.signal();
-        firstProducer.signal();
-        lock.unlock();
-    }
+    public abstract void consume(int number) throws InterruptedException;
 }
