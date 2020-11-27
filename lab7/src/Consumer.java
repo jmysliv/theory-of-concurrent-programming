@@ -25,7 +25,6 @@ public class Consumer implements Runnable{
         while(System.currentTimeMillis() - startTime < timeLimit){
             try {
                 Future<List<Integer>> future = proxy.consume((int) (Math.random() * maxNumber + 1));
-                System.out.println("Konsument robi coś innego");
                 long start = System.currentTimeMillis();
                 while(!future.isAvailable()){
                     //do something else

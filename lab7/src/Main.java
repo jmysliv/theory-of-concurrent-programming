@@ -1,9 +1,9 @@
 public class Main {
     public static void main(String[] args) {
-        int consumersNumber = 2;
-        int producersNumber = 2;
-        int bufferSize = 10;
-        int maxNumber = 5;
+        int consumersNumber = 100;
+        int producersNumber = 100;
+        int bufferSize = 50;
+        int maxNumber = (int) bufferSize/2;
         long timeLimit = 1000L;
 
         Buffer buffer = new Buffer(bufferSize);

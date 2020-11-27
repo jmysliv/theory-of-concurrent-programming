@@ -16,6 +16,8 @@ public abstract class Monitor {
     protected int firstProducerSize = 0;
     protected int restConsumersSize = 0;
     protected int restProducersSize = 0;
+    protected int productionCounter = 0;
+    protected int consumptionCounter = 0;
 
 
     Monitor(int size) {
@@ -39,4 +41,12 @@ public abstract class Monitor {
     public abstract void produce(int number) throws InterruptedException;
 
     public abstract void consume(int number) throws InterruptedException;
+
+    public int getProductionCounter() {
+        return productionCounter;
+    }
+
+    public int getConsumptionCounter() {
+        return consumptionCounter;
+    }
 }

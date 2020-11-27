@@ -25,7 +25,6 @@ public class Producer implements Runnable{
         while(System.currentTimeMillis() - startTime < timeLimit){
             try {
                 Future<List<Integer>> future = proxy.produce((int) (Math.random() * maxNumber + 1));
-                System.out.println("Producent robi coś innego");
                 long start = System.currentTimeMillis();
                 while(!future.isAvailable()){
                     //do something else

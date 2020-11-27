@@ -1,15 +1,20 @@
 public class Consumer implements Runnable{
 
     private final Monitor monitor;
-    Consumer(Monitor monitor) {
+    private final long timeLimit;
+    private final int maxNumber;
+    Consumer(Monitor monitor, long timeLimit, int maxNumber) {
+        this.timeLimit = timeLimit;
         this.monitor = monitor;
+        this.maxNumber = maxNumber;
     }
 
     @Override
     public void run() {
-        while (true){
+        long startTime = System.currentTimeMillis();
+        while(System.currentTimeMillis() - startTime < timeLimit){
             try {
-                this.monitor.consume((int) (Math.random() * 5 + 1));
+                this.monitor.consume((int) (Math.random() * maxNumber + 1));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
