@@ -3,8 +3,8 @@ public class Main {
         int consumersNumber = 2;
         int producersNumber = 2;
         int bufferSize = 10;
-        Long worktime = 1000L;
         int maxNumber = 5;
+        long timeLimit = 1000L;
 
         Buffer buffer = new Buffer(bufferSize);
         ActivationQueue activationQueue = new ActivationQueue();
@@ -19,12 +19,12 @@ public class Main {
         Producer[] producers = new Producer[producersNumber];
 
         for (int i = 0; i < consumersNumber; i++) {
-            consumers[i] = new Consumer(proxy, maxNumber, worktime);
+            consumers[i] = new Consumer(proxy, maxNumber, timeLimit);
             consumersThreads[i] = new Thread(consumers[i]);
             consumersThreads[i].start();
         }
         for (int i = 0; i < producersNumber; i++) {
-            producers[i] = new Producer(proxy, maxNumber, worktime);
+            producers[i] = new Producer(proxy, maxNumber, timeLimit);
             producersThreads[i] = new Thread(producers[i]);
             producersThreads[i].start();
         }
@@ -45,10 +45,14 @@ public class Main {
             }
         }
 
+        System.out.println("Wyprodukowano: " + buffer.getProductionCounter());
+        System.out.println("Skonsumowano: " + buffer.getConsumptionCounter());
+
         try {
             schedulerThread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
     }
 }

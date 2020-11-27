@@ -1,5 +1,3 @@
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -14,9 +12,8 @@ public class ActivationQueue {
         requests.put(request);
     }
 
-    public MethodRequest getMethodRequest(){
-        if(requests.isEmpty()) return null;
-        else return requests.poll();
+    public MethodRequest getMethodRequest() throws InterruptedException {
+        return requests.take();
     }
 }
 

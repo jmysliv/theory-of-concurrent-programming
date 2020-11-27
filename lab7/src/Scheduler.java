@@ -26,29 +26,31 @@ public class Scheduler implements Runnable{
         } else firstConsumerRequest = request;
     }
 
-    private void schedule(){
+    private void schedule() throws InterruptedException {
         while(true){
-            MethodRequest request = activationQueue.getMethodRequest();
-            if(request != null){
-                if( request instanceof  ProduceRequest) addProduceRequest((ProduceRequest) request);
-                else addConsumeRequest( (ConsumeRequest) request);
-            }
             if(firstProducerRequest != null && firstProducerRequest.canBeCalled()){
                 firstProducerRequest.call();
                 if(!produceRequests.isEmpty()) firstProducerRequest = produceRequests.poll();
                 else firstProducerRequest = null;
-            }
-            if(firstConsumerRequest != null && firstConsumerRequest.canBeCalled()){
+            } else if(firstConsumerRequest != null && firstConsumerRequest.canBeCalled()){
                 firstConsumerRequest.call();
                 if(!consumeRequests.isEmpty()) firstConsumerRequest = consumeRequests.poll();
                 else firstConsumerRequest = null;
+            } else{
+                MethodRequest request = activationQueue.getMethodRequest();
+                if( request instanceof  ProduceRequest) addProduceRequest((ProduceRequest) request);
+                else addConsumeRequest( (ConsumeRequest) request);
             }
         }
     }
 
     @Override
     public void run() {
-        this.schedule();
+        try {
+            this.schedule();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 }

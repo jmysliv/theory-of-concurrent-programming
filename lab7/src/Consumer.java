@@ -4,32 +4,35 @@ public class Consumer implements Runnable{
 
     private Proxy proxy;
     private int maxNumber;
-    private long worktime;
+    private long timeLimit;
 
-    public Consumer(Proxy proxy, int maxNumber, long worktime){
+    public Consumer(Proxy proxy, int maxNumber, long timeLimit){
         this.proxy = proxy;
         this.maxNumber = maxNumber;
-        this.worktime = worktime;
+        this.timeLimit = timeLimit;
     }
 
-    private void printResult( List<Integer> result){
+    private void printResult( List<Integer> result, long time){
         System.out.println("Consumed: " + result.stream()
                 .map(Object::toString)
-                .reduce("", (acc, number) -> acc + " " + number));
+                .reduce("", (acc, number) -> acc + " " + number) + " w czasie: " + time + "ms");
     }
 
 
     @Override
     public void run() {
-        while(true){
+        long startTime = System.currentTimeMillis();
+        while(System.currentTimeMillis() - startTime < timeLimit){
             try {
                 Future<List<Integer>> future = proxy.consume((int) (Math.random() * maxNumber + 1));
                 System.out.println("Konsument robi coś innego");
-                Thread.sleep(worktime);
+                long start = System.currentTimeMillis();
                 while(!future.isAvailable()){
-                    Thread.sleep(10);
+                    //do something else
+                    if(System.currentTimeMillis() - startTime > timeLimit) return;
                 }
-                printResult(future.getData());
+                long end = System.currentTimeMillis();
+                printResult(future.getData(), end-start);
             }
             catch (InterruptedException e){
                 e.printStackTrace();
