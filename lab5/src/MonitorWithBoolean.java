@@ -31,10 +31,10 @@ public class MonitorWithBoolean extends Monitor{
         for(int i=0; i<number; i++){
             int rand = (int) (Math.random() * 10 + 1);
             resources.add(rand);
-            System.out.println("Producent wyprodukował: " + rand);
             productionCounter++;
         }
 
+        System.out.println("Producent wyprodukował: " + number);
         System.out.println("Rozmiar kolejki: " + resources.size());
         restProducers.signal();
         firstConsumer.signal();
@@ -61,11 +61,11 @@ public class MonitorWithBoolean extends Monitor{
             firstConsumerSize --;
         }
         for (int i = 0; i < number; i++) {
-            int result = resources.poll();
-            System.out.println("Konsument pobrał: " + result);
+            resources.poll();
             consumptionCounter++;
         }
 
+        System.out.println("Konsument pobrał: " + number);
         System.out.println("Rozmiar kolejki: " + resources.size());
         restConsumers.signal();
         firstProducer.signal();

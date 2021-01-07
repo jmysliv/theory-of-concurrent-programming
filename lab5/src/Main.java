@@ -2,12 +2,12 @@ public class Main {
     public static void main(String[] args) {
         int consumersNumber = 100;
         int producersNumber = 100;
-        long timeLimit = 1000L;
+        long timeLimit = 100000L;
         int bufferSize = 50;
         int maxNumber = (int) bufferSize/2;
         //choose one
-        Monitor monitor = new MonitorWithBoolean(bufferSize);
-//        Monitor monitor = new MonitorWithHasWaiters(10);
+//        Monitor monitor = new MonitorWithBoolean(bufferSize);
+        Monitor monitor = new MonitorWithHasWaiters(10);
         Thread[] consumersThreads = new Thread[consumersNumber];
         Thread[] producersThreads = new Thread[producersNumber];
         Consumer[] consumers = new Consumer[consumersNumber];
