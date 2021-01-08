@@ -25,9 +25,37 @@ współbieżnych z wykorzystaniem sieci Petri.}
 
 \section{Symulacja i analiza własnego przykładu}
 
-\subsection{Symulacja}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth, height=0.4\textheight]{zad1.png}
+    \caption{Własny przykład sieci}
+\end{figure}
+
+Zbudowana przeze mnie sieć to cykl wraz z licznikiem liczby przejść przez cykl.
+Każdy token w \textbf{P3} oznacza jeden cykl który się wykonał.
+
 \subsection{Graf osiągalności}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth, height=0.6\textheight]{zad1_graph.png}
+    \caption{Graf osiągalności}
+\end{figure}
+
+Graf pokazuje, że cykl działa prawidłowo a w \textbf{P3} stale rośnie liczba tokenów.
+
 \subsection{Analiza niezmienników przejść}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth, height=0.4\textheight]{zad1_analiza.png}
+    \caption{Analiza sieci}
+\end{figure}
+
+Z analizy niezmienników wynika, że sieć nie jest odwracalna. Wynika to z tego, że po rozpoczeciu pierwszego cyklu
+w liczniku pojawia się pierwszy token i z każdym kolejnym cyklem liczba tokenów rośnie i nie powróci do 0, które było w markowaniu początkowym.
+Z tego wynika również, że sieć nie jest ograniczona, bo \textbf{P3} nie jest ograniczone. 
+Dodatkowo z równania niezmienników miejsc widzimy, że w cyklu jest na raz tylko jeden token, czyli
+nie ma możliwości by dwa cykla wykonywały się na raz.
 
 \section{Symulacja sieci z rysunku}
 \begin{figure}[H]
@@ -141,7 +169,27 @@ nieskończoność, co oznacza że poprawnie skonstruowałem sieć z buforem nieo
 \end{figure}
 
 \subsection{Graf osiągalności}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth, height=0.4\textheight]{zad6_graph.png}
+    \caption{Graf osiągalności}
+\end{figure}
+
+Jak wynika z grafu osiągalności są dwa możliwe markowania w których dochodzi do zakleszczenia.
+Są to markowania \textbf{\{0, 1, 0, 0, 1, 0\} oraz \{0, 0, 1, 1, 0, 0\}}, czyli takie w których tokeny znajdują się
+w \textbf{P1 i P4} w pierwszym wypadku, oraz \textbf{P2 i P3} w drugim. Do takiej sytuacji dochodzi jak kolejno po sobie 
+zostaną odpalone tranzycje \textbf{T0 i T4} w pierwszym wypadku, lub \textbf{T1, T3} w drugim wypadku.
 \subsection{State Space Analysis}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth, height=0.4\textheight]{zad6_analiza.png}
+    \caption{Analiza stanów}
+\end{figure}
+
+Jak widać \textit{State Space Analysis} potwierdziła nasze obserwacje odnośnie zakleszenia i 
+tego jakie tranzycje trzeba odpalić by do niego doprowadzić. Oprócz tego widzimy że sieć jest 
+ograniczona bo w żadnym miejscu nie bedzię więcej niż jeden token na raz więc wszystkie miejsca
+są 1-ograniczone, a z tego wynika że sieć jest również bezpieczna.
 
 \section{Zakleszczenie}
 \begin{figure}[H]
@@ -177,5 +225,29 @@ Jak widzimy \textit{State space analysis} wykazało, że w sieci jest zakleszcze
     \includegraphics[width=0.8\textwidth, height=0.7\textheight]{zad8.png}
     \caption{Sieć dla problemu 5 filozofów}
 \end{figure}
+
+\subsection{State space analysis}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth, height=0.4\textheight]{zad8_stany.png}
+    \caption{Analiza stanów}
+\end{figure}
+
+Z \textit{State space analysis} wynika, że sieć nie prowadzi do zakleszczenia. Oprócz tego sieć jest ograniczona,
+bo zawsze jest ograniczona liczba tokenów (po jednym dla każdego filozofa i widelca), czyli wszystkie miejsca są 
+1-ograniczone, czyli sieć jest bezpieczna.
+
+\subsection{Analiza niezmienników}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth, height=0.9\textheight]{zad8_analiza.png}
+    \caption{Analiza niezmienników}
+\end{figure}
+
+Z analizy niezmienników pokazują, że są zachowane wszystkie warunki problemu 5 filozofów.
+Równania z 2 składnikami (np. M(P0) + M(P13) = 1) pokazują, że każdy z 5 filozofów może być na raz tylko w jednym ze stanów:
+albo je albo myśli. Natomiast równania z 3 składnikami (np. M(P1) + M(P13) + M(P14) = 1) 
+pokazują, że jeden widelec może być na raz tylko u jednego filozofa lub na stole, czyli dwóch sąsiędnich filozofów nie może jeść na raz.
+
 
 \end{document}
